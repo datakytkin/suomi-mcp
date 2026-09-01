@@ -29,7 +29,7 @@
     "node": ">=18"
   },
   "bin": {
-    "datakytkin-mcp": "./dist/index.js"
+    "datakytkin-mcp": "dist/index.js"
   },
   "files": [
     "dist",

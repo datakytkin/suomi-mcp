@@ -61,44 +61,44 @@ Tiedosto:
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-Korvaa `/ABSOLUUTTINEN/POLKU/suomi-mcp` kloonatun hakemiston oikealla polulla
-(`pwd` kertoo sen repon juuressa).
-
-### macOS (npx tsx)
+### Suositeltu: npm-paketti (ei kloonausta)
 
 ```json
 {
   "mcpServers": {
     "datakytkin": {
       "command": "npx",
-      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/suomi-mcp/src/index.ts"]
+      "args": ["-y", "datakytkin-mcp"]
     }
   }
 }
 ```
 
-Jos `nvm`-oletus on Node 16, anna Node 20:n `npx` täydellä polulla
-(`nvm which 20` tulostaa `node`-binaarin polun; `npx` on samassa `bin/`-hakemistossa):
+Vaatii Node 18+ oletuksena polussa. Jos `nvm`-oletus on vanhempi, anna Node 20:n
+`npx` täydellä polulla (`nvm which 20` tulostaa `node`-binaarin polun; `npx` on
+samassa `bin/`-hakemistossa):
 
 ```json
 {
   "mcpServers": {
     "datakytkin": {
       "command": "/ABSOLUUTTINEN/POLKU/node/v20.x.x/bin/npx",
-      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/suomi-mcp/src/index.ts"]
+      "args": ["-y", "datakytkin-mcp"]
     }
   }
 }
 ```
 
-### Windows (npx tsx)
+### Vaihtoehto: aja repo-checkoutista
+
+Kehitykseen tai omiin muutoksiin – kloonaa repo ja osoita `src/index.ts`:ään:
 
 ```json
 {
   "mcpServers": {
     "datakytkin": {
       "command": "npx",
-      "args": ["tsx", "C:\\Users\\<KÄYTTÄJÄ>\\datakytkin\\src\\index.ts"]
+      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/suomi-mcp/src/index.ts"]
     }
   }
 }
