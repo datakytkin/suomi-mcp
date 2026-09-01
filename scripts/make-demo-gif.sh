@@ -5,7 +5,8 @@
 #   scripts/make-demo-gif.sh demo.mov [alku] [kesto]
 #   scripts/make-demo-gif.sh demo.mov 00:00:03 25      # leikkaa 3 s kohdasta, 25 s
 #
-# Säädöt ympäristömuuttujilla:  FPS=10 WIDTH=900 scripts/make-demo-gif.sh demo.mov
+# Säädöt ympäristömuuttujilla:  FPS=10 WIDTH=900 SPEED=2 scripts/make-demo-gif.sh demo.mov
+#   SPEED>1 nopeuttaa (hyvä pitkän nauhoituksen tiivistämiseen / odotusten yli)
 #
 # Tulos: .github/assets/demo.gif
 #
@@ -20,6 +21,7 @@ DURATION="${3:-}"
 
 FPS="${FPS:-12}"
 WIDTH="${WIDTH:-1000}"
+SPEED="${SPEED:-1}"
 OUT_DIR=".github/assets"
 OUT="$OUT_DIR/demo.gif"
 
@@ -36,7 +38,9 @@ CLIP_ARGS=()
 [ -n "$START" ] && CLIP_ARGS+=(-ss "$START")
 [ -n "$DURATION" ] && CLIP_ARGS+=(-t "$DURATION")
 
-SCALE="fps=${FPS},scale=${WIDTH}:-1:flags=lanczos"
+# setpts nopeuttaa/hidastaa; PTS-kerroin = 1/SPEED
+PTS=$(awk "BEGIN{printf \"%.5f\", 1/${SPEED}}")
+SCALE="setpts=${PTS}*PTS,fps=${FPS},scale=${WIDTH}:-1:flags=lanczos"
 
 if command -v gifski >/dev/null 2>&1; then
   echo "1/2  Poimitaan ruudut ($FPS fps, leveys $WIDTH)…"

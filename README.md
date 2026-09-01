@@ -14,9 +14,7 @@ Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
 muun MCP-yhteensopivan clientin) käyttöön kolme työkalua suomalaisiin avoimen
 datan rajapintoihin:
 
-<!-- DEMO: kun .github/assets/demo.gif on committattu, korvaa tämä kommentti rivillä:
-![datakytkin-mcp demo](https://raw.githubusercontent.com/datakytkin/suomi-mcp/main/.github/assets/demo.gif)
--->
+![datakytkin-mcp demo: Claude hakee Hilmasta tarjouspyynnöt ja tarkistaa hankintayksiköiden kaupparekisteritiedot PRH:sta](https://raw.githubusercontent.com/datakytkin/suomi-mcp/main/.github/assets/demo.gif)
 
 
 | Työkalu | Lähde | Mitä tekee |
