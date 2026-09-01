@@ -1,67 +1,37 @@
 # suomi-mcp
 
-Osa [datakytkin](https://github.com/datakytkin)-projektia. Kokoelma MCP-työkaluja,
-jotka tuovat suomalaista avointa dataa tekoälyavustajien käyttöön. npm-paketti:
-`datakytkin-mcp`.
+[![npm](https://img.shields.io/npm/v/datakytkin-mcp.svg)](https://www.npmjs.com/package/datakytkin-mcp)
+[![CI](https://github.com/datakytkin/suomi-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/datakytkin/suomi-mcp/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/datakytkin-mcp.svg)](LICENSE)
 
-Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin käyttöön
-kaksi suomalaista avoimen datan rajapintaa:
+Osa [datakytkin](https://github.com/datakytkin)-projektia. Kokoelma MCP-työkaluja,
+jotka tuovat suomalaista avointa dataa suoraan tekoälyavustajien käyttöön – ilman
+selaimessa kikkailua, PDF-latauksia tai leikepöytää.
+
+Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
+muun MCP-yhteensopivan clientin) käyttöön kaksi suomalaista avoimen datan
+rajapintaa:
 
 | Työkalu | Lähde | Mitä tekee |
 | --- | --- | --- |
-| `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Hakee yrityksen perustiedot Y-tunnuksella tai nimellä. |
-| `hae_julkiset_hankinnat_hilma` | Hilma – julkiset hankinnat (`hankintailmoitukset.fi`) | Hakee avoinna olevat hankintailmoitukset hakusanalla. |
+| `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Hakee yrityksen perustiedot Y-tunnuksella tai nimellä: nimi, Y-tunnus, yritysmuoto, rekisteröintipäivä, toiminnan tila. |
+| `hae_julkiset_hankinnat_hilma` | Hilma – julkiset hankinnat (`hankintailmoitukset.fi`) | Hakee avoinna olevat hankintailmoitukset hakusanalla: otsikko, hankintayksikkö, määräaika, suorat linkit ilmoitukseen ja tarjouspyyntöön. |
 
-> **Huom PRH:** vanha `avoindata.prh.fi/bis/v1` on poistettu käytöstä. Tämä palvelin
+> **PRH:** vanha `avoindata.prh.fi/bis/v1` on poistettu käytöstä. Tämä palvelin
 > käyttää nykyistä **v3**-rajapintaa (sama avoin YTJ-yrityshaku, ei API-avainta).
 >
-> **Huom Hilma:** käytetään Hilman julkista hakurajapintaa, joka ei vaadi avainta.
+> **Hilma:** käytetään Hilman julkista hakurajapintaa, joka ei vaadi avainta.
 > Koko ilmoituksen eForms-XML:n saa erikseen AVP-read-rajapinnasta (ilmainen
 > tilausavain) – sitä ei tässä tarvita.
 
-## Ei virallinen tuote
+## Pikakäyttö
 
-`datakytkin` on itsenäinen avoimen lähdekoodin projekti. Se käyttää PRH:n ja
-Hilman julkisia rajapintoja, mutta ei ole PRH:n, Hanselin, Hilman tai minkään
-viranomaisen hyväksymä, tukema tai ylläpitämä. Data tulee sellaisenaan lähteestä.
+Vaatii **Node.js 18+** polussa (kehitetty ja testattu Node 20:llä).
 
-## Vaatimukset
-
-- **Node.js 18+** (kehitetty ja testattu Node 20:llä). Node 16 ei toimi – siitä puuttuu `fetch`.
-
-## Asennus
-
-```bash
-git clone https://github.com/datakytkin/suomi-mcp.git
-cd suomi-mcp
-nvm use 20        # tai: nvm install 20
-npm install
-npm run typecheck # valinnainen: varmista että kääntyy
-```
-
-## Ajo kehityksessä
-
-```bash
-npm run dev       # = npx tsx src/index.ts
-```
-
-Palvelin puhuu MCP:tä stdin/stdout-yhteydellä; lokit menevät stderriin.
-
-## Käännetty ajo (valinnainen)
-
-```bash
-npm run build     # tuottaa dist/
-npm start         # = node dist/index.js
-```
-
-## Claude Desktop -konfiguraatio
-
-Tiedosto:
+Lisää Claude Desktopin konfiguraatioon:
 
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-
-### Suositeltu: npm-paketti (ei kloonausta)
 
 ```json
 {
@@ -74,9 +44,11 @@ Tiedosto:
 }
 ```
 
-Vaatii Node 18+ oletuksena polussa. Jos `nvm`-oletus on vanhempi, anna Node 20:n
-`npx` täydellä polulla (`nvm which 20` tulostaa `node`-binaarin polun; `npx` on
-samassa `bin/`-hakemistossa):
+Käynnistä Claude Desktop uudelleen. Ei tarvita erillistä asennusta – `npx` hakee
+paketin npm:stä.
+
+Jos `nvm`-oletuksesi on vanhempi Node, anna Node 20:n `npx` täydellä polulla
+(`nvm which 20` tulostaa `node`-binaarin polun; `npx` on samassa `bin/`-hakemistossa):
 
 ```json
 {
@@ -89,9 +61,36 @@ samassa `bin/`-hakemistossa):
 }
 ```
 
-### Vaihtoehto: aja repo-checkoutista
+## Testikehotteet
 
-Kehitykseen tai omiin muutoksiin – kloonaa repo ja osoita `src/index.ts`:ään:
+1. *"Hae PRH:sta yrityksen tiedot Y-tunnuksella 1629284-5."*
+2. *"Etsi Hilmasta avoimet pilvipalveluihin liittyvät hankintailmoitukset, näytä 5."*
+3. *"Hae YTJ:stä kaikki yritykset joiden nimessä on 'Reaktor' ja listaa Y-tunnukset."*
+4. *"Näytä Hilmasta it-konsultoinnin tarjouspyynnöt ja niiden määräajat."*
+
+## Kehitys
+
+```bash
+git clone https://github.com/datakytkin/suomi-mcp.git
+cd suomi-mcp
+nvm use 20        # tai: nvm install 20
+npm install
+npm run typecheck # tarkista että kääntyy
+npm run dev       # käynnistä palvelin stdio-tilassa (= npx tsx src/index.ts)
+```
+
+Palvelin puhuu MCP:tä stdin/stdout-yhteydellä; lokit menevät stderriin.
+
+Käännetty ajo:
+
+```bash
+npm run build     # tuottaa dist/
+npm start         # = node dist/index.js
+```
+
+Uuden työkalun lisääminen: ks. [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Claude Desktop -konfiguraatio repo-checkoutista (kehitykseen / omiin muutoksiin):
 
 ```json
 {
@@ -104,11 +103,12 @@ Kehitykseen tai omiin muutoksiin – kloonaa repo ja osoita `src/index.ts`:ään
 }
 ```
 
-Käynnistä Claude Desktop uudelleen muutoksen jälkeen.
+## Ei virallinen tuote
 
-## Testikehotteet Claude Desktopissa
+`datakytkin` on itsenäinen avoimen lähdekoodin projekti. Se käyttää PRH:n ja
+Hilman julkisia rajapintoja, mutta ei ole PRH:n, Hanselin, Hilman tai minkään
+viranomaisen hyväksymä, tukema tai ylläpitämä. Data tulee sellaisenaan lähteestä.
 
-1. *"Hae PRH:sta yrityksen tiedot Y-tunnuksella 1629284-5."*
-2. *"Etsi Hilmasta avoimet pilvipalveluihin liittyvät hankintailmoitukset, näytä 5."*
-3. *"Hae YTJ:stä kaikki yritykset joiden nimessä on 'Reaktor' ja listaa Y-tunnukset."*
-4. *"Näytä Hilmasta it-konsultoinnin tarjouspyynnöt ja niiden määräajat."*
+## Lisenssi
+
+[MIT](LICENSE)
