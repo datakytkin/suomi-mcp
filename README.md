@@ -28,7 +28,8 @@ viranomaisen hyväksymä, tukema tai ylläpitämä. Data tulee sellaisenaan läh
 ## Asennus
 
 ```bash
-cd /Users/tomisalmi/Desktop/CLAUDE/Personal/datakytkin
+git clone https://github.com/datakytkin/mcp.git datakytkin-mcp
+cd datakytkin-mcp
 nvm use 20        # tai: nvm install 20
 npm install
 npm run typecheck # valinnainen: varmista että kääntyy
@@ -56,6 +57,9 @@ Tiedosto:
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
+Korvaa `/ABSOLUUTTINEN/POLKU/datakytkin-mcp` kloonatun hakemiston oikealla polulla
+(`pwd` kertoo sen repon juuressa).
+
 ### macOS (npx tsx)
 
 ```json
@@ -63,20 +67,21 @@ Tiedosto:
   "mcpServers": {
     "datakytkin": {
       "command": "npx",
-      "args": ["tsx", "/Users/tomisalmi/Desktop/CLAUDE/Personal/datakytkin/src/index.ts"]
+      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/datakytkin-mcp/src/index.ts"]
     }
   }
 }
 ```
 
-Jos `nvm`-oletus on Node 16, anna Node 20:n `npx` täydellä polulla:
+Jos `nvm`-oletus on Node 16, anna Node 20:n `npx` täydellä polulla
+(`nvm which 20` tulostaa `node`-binaarin polun; `npx` on samassa `bin/`-hakemistossa):
 
 ```json
 {
   "mcpServers": {
     "datakytkin": {
-      "command": "/Users/tomisalmi/.nvm/versions/node/v20.19.0/bin/npx",
-      "args": ["tsx", "/Users/tomisalmi/Desktop/CLAUDE/Personal/datakytkin/src/index.ts"]
+      "command": "/ABSOLUUTTINEN/POLKU/node/v20.x.x/bin/npx",
+      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/datakytkin-mcp/src/index.ts"]
     }
   }
 }
