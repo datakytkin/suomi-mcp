@@ -55,19 +55,34 @@ Lisää Claude Desktopin konfiguraatioon:
 Käynnistä Claude Desktop uudelleen. Ei tarvita erillistä asennusta – `npx` hakee
 paketin npm:stä.
 
-Jos `nvm`-oletuksesi on vanhempi Node, anna Node 20:n `npx` täydellä polulla
-(`nvm which 20` tulostaa `node`-binaarin polun; `npx` on samassa `bin/`-hakemistossa):
+### Jos näet virheen `fetch is not defined`
+
+Claude Desktop käynnistää palvelimen omalla `PATH`:llaan, ja `npx` valitsee
+`#!/usr/bin/env node` -rivin kautta **ensimmäisen `node`:n `PATH`:ssa** – usein
+vanhan järjestelmä-Noden (esim. v16), josta puuttuu `fetch`. Vaihda tällöin
+suoraan absoluuttiseen Node 18+ -binääriin ja globaaliin asennukseen:
+
+```bash
+# asenna halutulla Nodella (esim. nvm:n Node 20)
+"$(nvm which 20)" "$(dirname "$(nvm which 20)")/npm" install -g datakytkin-mcp
+# tulosta polut configia varten:
+echo "command: $(nvm which 20)"
+echo "entry:   $("$(nvm which 20)" "$(dirname "$(nvm which 20)")/npm" root -g)/datakytkin-mcp/dist/index.js"
+```
 
 ```json
 {
   "mcpServers": {
     "datakytkin": {
-      "command": "/ABSOLUUTTINEN/POLKU/node/v20.x.x/bin/npx",
-      "args": ["-y", "datakytkin-mcp"]
+      "command": "/ABSOLUUTTINEN/POLKU/node/v20.x.x/bin/node",
+      "args": ["/ABSOLUUTTINEN/POLKU/node/v20.x.x/lib/node_modules/datakytkin-mcp/dist/index.js"]
     }
   }
 }
 ```
+
+`node` ajetaan tässä eksplisiittisesti, joten `PATH`:n vanha Node ei häiritse.
+Päivitys: `npm install -g datakytkin-mcp@latest` samalla Nodella.
 
 ## Testikehotteet
 
@@ -157,6 +172,26 @@ Requires **Node.js 18+**. Add to your Claude Desktop config
 ```
 
 Restart Claude Desktop.
+
+**Seeing `fetch is not defined`?** Claude Desktop launches the server with its own
+`PATH`, and `npx` may pick an old system `node` (e.g. v16) that lacks `fetch`.
+Install globally with a Node 18+ binary and point `command` straight at it:
+
+```bash
+npm install -g datakytkin-mcp
+npm root -g   # entry = <printed path>/datakytkin-mcp/dist/index.js
+```
+
+```json
+{
+  "mcpServers": {
+    "datakytkin": {
+      "command": "/absolute/path/to/node18+/bin/node",
+      "args": ["/absolute/path/to/lib/node_modules/datakytkin-mcp/dist/index.js"]
+    }
+  }
+}
+```
 
 ### Not an official product
 
