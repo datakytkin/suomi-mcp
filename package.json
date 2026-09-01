@@ -1,0 +1,55 @@
+{
+  "name": "datakytkin-mcp",
+  "version": "0.1.0",
+  "description": "Paikallisesti ajettava MCP-palvelin, joka tuo Clauden käyttöön suomalaisia avoimen datan rajapintoja (PRH/YTJ ja Hilma julkiset hankinnat).",
+  "type": "module",
+  "license": "MIT",
+  "author": "Tomi Salmi",
+  "homepage": "https://github.com/datakytkin/mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datakytkin/mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/datakytkin/mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "prh",
+    "ytj",
+    "hilma",
+    "hankintailmoitukset",
+    "finland",
+    "avoin-data",
+    "open-data"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "datakytkin-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}
