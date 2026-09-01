@@ -144,7 +144,8 @@ async function haeJson(url: URL): Promise<HilmaVastaus> {
     const res = await fetch(url, {
       headers: {
         Accept: "application/json",
-        "User-Agent": "datakytkin-mcp/0.1 (+https://github.com/)",
+        "User-Agent":
+          "datakytkin-mcp/0.1 (+https://github.com/datakytkin/suomi-mcp)",
       },
       signal: controller.signal,
     });

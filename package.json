@@ -5,13 +5,13 @@
   "type": "module",
   "license": "MIT",
   "author": "Tomi Salmi",
-  "homepage": "https://github.com/datakytkin/mcp#readme",
+  "homepage": "https://github.com/datakytkin/suomi-mcp#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/datakytkin/mcp.git"
+    "url": "git+https://github.com/datakytkin/suomi-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/datakytkin/mcp/issues"
+    "url": "https://github.com/datakytkin/suomi-mcp/issues"
   },
   "keywords": [
     "mcp",

@@ -1,4 +1,8 @@
-# datakytkin-mcp
+# suomi-mcp
+
+Osa [datakytkin](https://github.com/datakytkin)-projektia. Kokoelma MCP-työkaluja,
+jotka tuovat suomalaista avointa dataa tekoälyavustajien käyttöön. npm-paketti:
+`datakytkin-mcp`.
 
 Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin käyttöön
 kaksi suomalaista avoimen datan rajapintaa:
@@ -28,8 +32,8 @@ viranomaisen hyväksymä, tukema tai ylläpitämä. Data tulee sellaisenaan läh
 ## Asennus
 
 ```bash
-git clone https://github.com/datakytkin/mcp.git datakytkin-mcp
-cd datakytkin-mcp
+git clone https://github.com/datakytkin/suomi-mcp.git
+cd suomi-mcp
 nvm use 20        # tai: nvm install 20
 npm install
 npm run typecheck # valinnainen: varmista että kääntyy
@@ -57,7 +61,7 @@ Tiedosto:
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-Korvaa `/ABSOLUUTTINEN/POLKU/datakytkin-mcp` kloonatun hakemiston oikealla polulla
+Korvaa `/ABSOLUUTTINEN/POLKU/suomi-mcp` kloonatun hakemiston oikealla polulla
 (`pwd` kertoo sen repon juuressa).
 
 ### macOS (npx tsx)
@@ -67,7 +71,7 @@ Korvaa `/ABSOLUUTTINEN/POLKU/datakytkin-mcp` kloonatun hakemiston oikealla polul
   "mcpServers": {
     "datakytkin": {
       "command": "npx",
-      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/datakytkin-mcp/src/index.ts"]
+      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/suomi-mcp/src/index.ts"]
     }
   }
 }
@@ -81,7 +85,7 @@ Jos `nvm`-oletus on Node 16, anna Node 20:n `npx` täydellä polulla
   "mcpServers": {
     "datakytkin": {
       "command": "/ABSOLUUTTINEN/POLKU/node/v20.x.x/bin/npx",
-      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/datakytkin-mcp/src/index.ts"]
+      "args": ["tsx", "/ABSOLUUTTINEN/POLKU/suomi-mcp/src/index.ts"]
     }
   }
 }
