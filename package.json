@@ -1,6 +1,6 @@
 {
   "name": "datakytkin-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Paikallisesti ajettava MCP-palvelin, joka tuo Clauden käyttöön suomalaisia avoimen datan rajapintoja (PRH/YTJ ja Hilma julkiset hankinnat).",
   "type": "module",
   "license": "MIT",
