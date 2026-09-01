@@ -16,6 +16,7 @@ rajapintaa:
 | --- | --- | --- |
 | `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Hakee yrityksen perustiedot Y-tunnuksella tai nimellä: nimi, Y-tunnus, yritysmuoto, rekisteröintipäivä, toiminnan tila. |
 | `hae_julkiset_hankinnat_hilma` | Hilma – julkiset hankinnat (`hankintailmoitukset.fi`) | Hakee avoinna olevat hankintailmoitukset hakusanalla: otsikko, hankintayksikkö, määräaika, suorat linkit ilmoitukseen ja tarjouspyyntöön. |
+| `hae_kaupparekisteri_muutokset_prh` | PRH – rekisteröidyt ilmoitukset (`avoindata.prh.fi/opendata-registerednotices-api/v3`) | Yrityksen perustiedot + aikajana kaupparekisteriin rekisteröidyistä ilmoituksista: hallitus- ja nimenmuutokset, tilinpäätökset, osakepääoma, konkurssi/saneeraus/selvitystila. Täysi kattavuus. |
 
 > **PRH:** vanha `avoindata.prh.fi/bis/v1` on poistettu käytöstä. Tämä palvelin
 > käyttää nykyistä **v3**-rajapintaa (sama avoin YTJ-yrityshaku, ei API-avainta).
@@ -67,6 +68,8 @@ Jos `nvm`-oletuksesi on vanhempi Node, anna Node 20:n `npx` täydellä polulla
 2. *"Etsi Hilmasta avoimet pilvipalveluihin liittyvät hankintailmoitukset, näytä 5."*
 3. *"Hae YTJ:stä kaikki yritykset joiden nimessä on 'Reaktor' ja listaa Y-tunnukset."*
 4. *"Näytä Hilmasta it-konsultoinnin tarjouspyynnöt ja niiden määräajat."*
+5. *"Listaa Y-tunnuksen 1629284-5 viimeisimmät kaupparekisteriin rekisteröidyt muutokset."*
+6. *"Onko yrityksellä 1234567-8 merkintöjä konkurssista tai saneerauksesta? Milloin hallitus on viimeksi muuttunut?"*
 
 ## Kehitys
 
