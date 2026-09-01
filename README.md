@@ -14,6 +14,11 @@ Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
 muun MCP-yhteensopivan clientin) käyttöön kolme työkalua suomalaisiin avoimen
 datan rajapintoihin:
 
+<!-- DEMO: kun .github/assets/demo.gif on committattu, korvaa tämä kommentti rivillä:
+![datakytkin-mcp demo](https://raw.githubusercontent.com/datakytkin/suomi-mcp/main/.github/assets/demo.gif)
+-->
+
+
 | Työkalu | Lähde | Mitä tekee |
 | --- | --- | --- |
 | `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Hakee yrityksen perustiedot Y-tunnuksella tai nimellä: nimi, Y-tunnus, yritysmuoto, rekisteröintipäivä, toiminnan tila. |
