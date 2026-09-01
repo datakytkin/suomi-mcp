@@ -4,13 +4,15 @@
 [![CI](https://github.com/datakytkin/suomi-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/datakytkin/suomi-mcp/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/datakytkin-mcp.svg)](LICENSE)
 
+**[English summary below ↓](#english)**
+
 Osa [datakytkin](https://github.com/datakytkin)-projektia. Kokoelma MCP-työkaluja,
 jotka tuovat suomalaista avointa dataa suoraan tekoälyavustajien käyttöön – ilman
 selaimessa kikkailua, PDF-latauksia tai leikepöytää.
 
 Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
-muun MCP-yhteensopivan clientin) käyttöön kaksi suomalaista avoimen datan
-rajapintaa:
+muun MCP-yhteensopivan clientin) käyttöön kolme työkalua suomalaisiin avoimen
+datan rajapintoihin:
 
 | Työkalu | Lähde | Mitä tekee |
 | --- | --- | --- |
@@ -112,6 +114,52 @@ Claude Desktop -konfiguraatio repo-checkoutista (kehitykseen / omiin muutoksiin)
 Hilman julkisia rajapintoja, mutta ei ole PRH:n, Hanselin, Hilman tai minkään
 viranomaisen hyväksymä, tukema tai ylläpitämä. Data tulee sellaisenaan lähteestä.
 
-## Lisenssi
+---
+
+## English
+
+**suomi-mcp** is part of the [datakytkin](https://github.com/datakytkin) project:
+a set of [Model Context Protocol](https://modelcontextprotocol.io) tools that bring
+Finnish open government data straight into AI assistants – no browser tabs, PDF
+downloads or copy-paste.
+
+A locally run **MCP server (stdio)** exposing three tools to Claude Desktop (or any
+MCP-compatible client):
+
+| Tool | Source | What it does |
+| --- | --- | --- |
+| `hae_yritystiedot_prh` | Finnish Patent and Registration Office (PRH) / Business Information System, open data v3 | Look up a company by Business ID or name: name, Business ID, company form, registration date, status. |
+| `hae_julkiset_hankinnat_hilma` | Hilma – Finnish public procurement notices (`hankintailmoitukset.fi`) | Search open procurement notices by keyword: title, contracting entity, deadline, direct links to the notice and tender documents. |
+| `hae_kaupparekisteri_muutokset_prh` | PRH – registered notices open data | Company basics + a timeline of entries registered in the Finnish Trade Register: board and name changes, financial statements, share capital, bankruptcy / restructuring / liquidation. Full coverage. |
+
+Tool names and all output are in Finnish (that is the data's language).
+
+### Install
+
+Requires **Node.js 18+**. Add to your Claude Desktop config
+(`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS,
+`%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+
+```json
+{
+  "mcpServers": {
+    "datakytkin": {
+      "command": "npx",
+      "args": ["-y", "datakytkin-mcp"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop.
+
+### Not an official product
+
+`datakytkin` is an independent open-source project. It consumes public APIs from
+PRH and Hilma but is not endorsed, supported or operated by PRH, Hansel, Hilma or
+any public authority. Data is served as-is from the source. See
+[SECURITY.md](SECURITY.md) for notes on the data sources and responsible use.
+
+## Lisenssi / License
 
 [MIT](LICENSE)
