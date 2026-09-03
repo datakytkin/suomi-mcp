@@ -10,6 +10,7 @@ nvm use            # Node 20 (.nvmrc)
 npm install
 npm run dev        # käynnistää MCP-palvelimen stdio-tilassa
 npm run typecheck
+npm test           # vitest run  (npm run test:watch kehittäessä)
 ```
 
 ## Uuden työkalun lisääminen
@@ -46,5 +47,7 @@ npm run typecheck
 ## Pull requestit
 
 - Yksi looginen muutos per PR.
-- `npm run typecheck` ja `npm run build` menevät läpi.
+- `npm run typecheck`, `npm test` ja `npm run build` menevät läpi.
+- Uudelle työkalulle vähintään yksi testi (`src/tools/<lahde>.test.ts`): mockaa
+  `fetch` (ks. `src/test-utils.ts`), tarkista muotoilu + tyhjä tulos + HTTP-virhe.
 - Selitä mihin rajapintaan/kenttiin muutos nojaa (linkki dokumentaatioon jos on).

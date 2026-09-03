@@ -99,6 +99,7 @@ cd suomi-mcp
 nvm use 20        # tai: nvm install 20
 npm install
 npm run typecheck # tarkista että kääntyy
+npm test          # vitest: työkalut (mockattu fetch), rekisteri, auth, mcp-server
 npm run dev       # käynnistä palvelin stdio-tilassa (= npx tsx src/index.ts)
 ```
 
