@@ -11,7 +11,7 @@ jotka tuovat suomalaista avointa dataa suoraan tekoälyavustajien käyttöön �
 selaimessa kikkailua, PDF-latauksia tai leikepöytää.
 
 Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
-muun MCP-yhteensopivan clientin) käyttöön neljä työkalua suomalaisiin avoimen
+muun MCP-yhteensopivan clientin) käyttöön kahdeksan työkalua suomalaisiin avoimen
 datan rajapintoihin:
 
 ![datakytkin-mcp demo: Claude hakee Hilmasta tarjouspyynnöt ja tarkistaa hankintayksiköiden kaupparekisteritiedot PRH:sta](https://raw.githubusercontent.com/datakytkin/suomi-mcp/main/.github/assets/demo.gif)
@@ -19,10 +19,14 @@ datan rajapintoihin:
 
 | Työkalu | Lähde | Mitä tekee |
 | --- | --- | --- |
-| `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Hakee yrityksen perustiedot Y-tunnuksella tai nimellä: nimi, Y-tunnus, yritysmuoto, rekisteröintipäivä, toiminnan tila. |
+| `hae_yritystiedot_prh` | PRH / YTJ avoin data (`avoindata.prh.fi/opendata-ytj-api/v3`) | Yrityksen perustiedot Y-tunnuksella tai nimellä: nimi, Y-tunnus, yritysmuoto, **toimiala (TOL), kotipaikka, verkkosivu**, rekisteröintipäivä, toiminnan tila, **rekisterimerkinnät** (ALV-, ennakkoperintä-, työnantajarekisteri). |
 | `hae_julkiset_hankinnat_hilma` | Hilma – julkiset hankinnat (`hankintailmoitukset.fi`) | Hakee avoinna olevat hankintailmoitukset hakusanalla: otsikko, hankintayksikkö, määräaika, suorat linkit ilmoitukseen ja tarjouspyyntöön. |
+| `hae_hankintailmoitus` | Hilma – julkiset hankinnat | Yhden hankinnan **kaikki tiedot**: koko kuvaus, arvioitu arvo, menettely, CPV-koodit, osat, vastuullisuuskriteerit, TED-numero, linkit. |
 | `hae_kaupparekisteri_muutokset_prh` | PRH – rekisteröidyt ilmoitukset (`avoindata.prh.fi/opendata-registerednotices-api/v3`) | Yrityksen perustiedot + aikajana kaupparekisteriin rekisteröidyistä ilmoituksista: hallitus- ja nimenmuutokset, tilinpäätökset, osakepääoma, konkurssi/saneeraus/selvitystila. Täysi kattavuus. |
+| `tarkista_alv_tunnus` | EU **VIES** | Tarkistaa EU-ALV-tunnuksen voimassaolon + palauttaa nimen ja osoitteen. Käytä ennen ALV 0 % -laskutusta EU-maahan. |
 | `hae_porssisahko` | porssisahko.net avoin API | Suomen pörssisähkön (spot) tuntihinnat: hinta nyt, seuraavat tunnit, vuorokauden halvin ja kallein tunti. c/kWh sis. ALV 25,5 %. |
+| `hae_saa` | Ilmatieteen laitos, avoin data (WFS) | Sääennuste tunneittain paikkakunnalle: lämpötila, tuuli, sade, ilmankosteus. |
+| `laske_inflaatio` | Tilastokeskus StatFin (elinkustannusindeksi) | Rahan ostovoiman muutos vuosien välillä, yhtenäinen sarja vuodesta 1951. "Paljonko 1000 € vuonna 1985 on nyt." |
 
 > **PRH:** vanha `avoindata.prh.fi/bis/v1` on poistettu käytöstä. Tämä palvelin
 > käyttää nykyistä **v3**-rajapintaa (sama avoin YTJ-yrityshaku, ei API-avainta).
@@ -92,6 +96,10 @@ Päivitys: `npm install -g datakytkin-mcp@latest` samalla Nodella.
 5. *"Listaa Y-tunnuksen 1629284-5 viimeisimmät kaupparekisteriin rekisteröidyt muutokset."*
 6. *"Onko yrityksellä 1234567-8 merkintöjä konkurssista tai saneerauksesta? Milloin hallitus on viimeksi muuttunut?"*
 7. *"Mikä on pörssisähkön hinta nyt ja milloin tänään on halvinta?"*
+8. *"Onko ALV-tunnus DE811128135 voimassa ja kenelle se kuuluu?"*
+9. *"Millainen sää Rovaniemellä on seuraavat 12 tuntia?"*
+10. *"Paljonko 500 markkaa vuonna 1990 on nykyrahassa?"*
+11. *"Näytä kaikki tiedot Hilman tietoturvakonsultoinnin dynaamisesta hankintajärjestelmästä."*
 
 ## Kehitys
 
@@ -191,15 +199,19 @@ a set of [Model Context Protocol](https://modelcontextprotocol.io) tools that br
 Finnish open government data straight into AI assistants – no browser tabs, PDF
 downloads or copy-paste.
 
-A locally run **MCP server (stdio)** exposing four tools to Claude Desktop (or any
+A locally run **MCP server (stdio)** exposing eight tools to Claude Desktop (or any
 MCP-compatible client):
 
 | Tool | Source | What it does |
 | --- | --- | --- |
-| `hae_yritystiedot_prh` | Finnish Patent and Registration Office (PRH) / Business Information System, open data v3 | Look up a company by Business ID or name: name, Business ID, company form, registration date, status. |
+| `hae_yritystiedot_prh` | Finnish Patent and Registration Office (PRH) / Business Information System, open data v3 | Company details by Business ID or name: name, Business ID, company form, industry (TOL), domicile, website, registration date, status, and register entries (VAT / prepayment / employer register). |
 | `hae_julkiset_hankinnat_hilma` | Hilma – Finnish public procurement notices (`hankintailmoitukset.fi`) | Search open procurement notices by keyword: title, contracting entity, deadline, direct links to the notice and tender documents. |
+| `hae_hankintailmoitus` | Hilma – Finnish public procurement notices | All details of a single procurement: full description, estimated value, procedure, CPV codes, lots, sustainability criteria, TED number, links. |
 | `hae_kaupparekisteri_muutokset_prh` | PRH – registered notices open data | Company basics + a timeline of entries registered in the Finnish Trade Register: board and name changes, financial statements, share capital, bankruptcy / restructuring / liquidation. Full coverage. |
+| `tarkista_alv_tunnus` | EU VIES | Validates an EU VAT number and returns the registered name and address. Use before zero-rated intra-EU invoicing. |
 | `hae_porssisahko` | porssisahko.net open API | Finnish day-ahead electricity spot prices by hour: price now, upcoming hours, cheapest and most expensive hour of the day. c/kWh incl. 25.5% VAT. |
+| `hae_saa` | Finnish Meteorological Institute open data (WFS) | Hourly weather forecast for a place: temperature, wind, precipitation, humidity. |
+| `laske_inflaatio` | Statistics Finland StatFin (cost-of-living index) | Purchasing power of a sum between two years, continuous series since 1951. |
 
 Tool names and all output are in Finnish (that is the data's language).
 

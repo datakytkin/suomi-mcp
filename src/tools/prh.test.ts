@@ -41,6 +41,37 @@ const reaktor = {
       descriptions: [{ languageCode: "1", description: "Rekisterissä" }],
       registrationDate: "2000-10-04",
     },
+    {
+      type: "5",
+      register: "5",
+      descriptions: [{ languageCode: "1", description: "Rekisterissä" }],
+    },
+    {
+      type: "80",
+      register: "6",
+      descriptions: [
+        { languageCode: "1", description: "Liiketoiminnasta arvonlisäverovelvollinen" },
+      ],
+    },
+  ],
+  mainBusinessLine: {
+    type: "62100",
+    descriptions: [
+      { languageCode: "1", description: "Ohjelmistojen suunnittelu ja valmistus" },
+      { languageCode: "3", description: "Computer programming activities" },
+    ],
+  },
+  website: { url: "www.reaktor.fi" },
+  addresses: [
+    {
+      type: 1,
+      street: "Yliopistonkatu",
+      postCode: "00100",
+      postOffices: [
+        { city: "HELSINGFORS", languageCode: "2" },
+        { city: "HELSINKI", languageCode: "1" },
+      ],
+    },
   ],
   registrationDate: "2000-10-04",
   endDate: null,
@@ -63,8 +94,15 @@ describe("haeYritystiedot_prh", () => {
     expect(text).toContain("Reaktor Innovations Oy");
     expect(text).toContain("1629284-5");
     expect(text).toContain("Osakeyhtiö");
-    expect(text).toContain("Rekisterissä");
     expect(text).toContain("REAKTOR CREATIVE"); // aputoiminimi
+    // YTJ-laajennus:
+    expect(text).toContain("Ohjelmistojen suunnittelu ja valmistus (TOL 62100)");
+    expect(text).toContain("Kotipaikka:        Helsinki");
+    expect(text).toContain("www.reaktor.fi");
+    expect(text).toContain("Ennakkoperintärekisteri: Rekisterissä");
+    expect(text).toContain(
+      "Arvonlisäverovelvollisuus: Liiketoiminnasta arvonlisäverovelvollinen",
+    );
   });
 
   it("nimihaku käyttää name-parametria ja listaa useat osumat", async () => {

@@ -11,7 +11,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ToolContext, ToolDefinition } from "./tools/types.js";
 
 export const SERVER_NAME = "datasilta-gateway";
-export const SERVER_VERSION = "0.3.0";
+export const SERVER_VERSION = "0.4.0";
 
 export function createMcpServer(
   tools: ToolDefinition[],

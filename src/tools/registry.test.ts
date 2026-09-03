@@ -6,10 +6,14 @@ describe("loadTools", () => {
   it("löytää kaikki työkalut ilman duplikaatteja, aakkosjärjestyksessä", async () => {
     const names = (await loadTools()).map((t) => t.name);
     expect(names).toEqual([
+      "hae_hankintailmoitus",
       "hae_julkiset_hankinnat_hilma",
       "hae_kaupparekisteri_muutokset_prh",
       "hae_porssisahko",
+      "hae_saa",
       "hae_yritystiedot_prh",
+      "laske_inflaatio",
+      "tarkista_alv_tunnus",
     ]);
     expect(new Set(names).size).toBe(names.length);
   });

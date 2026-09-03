@@ -57,7 +57,7 @@ interface PrhYritysmuoto {
 }
 
 interface PrhRekisterimerkinta {
-  register?: string; // "1" = kaupparekisteri
+  register?: string; // REK-koodilista, ks. REK-map alla
   authority?: string;
   type?: string;
   registrationDate?: string;
@@ -65,16 +65,43 @@ interface PrhRekisterimerkinta {
   descriptions?: PrhKuvaus[];
 }
 
+interface PrhPostiosoite {
+  city?: string;
+  languageCode?: string;
+}
+
+interface PrhOsoite {
+  type?: number;
+  street?: string;
+  postCode?: string;
+  postOffices?: PrhPostiosoite[];
+}
+
 interface PrhYritys {
   businessId?: { value?: string; registrationDate?: string };
   names?: PrhNimi[];
   companyForms?: PrhYritysmuoto[];
   registeredEntries?: PrhRekisterimerkinta[];
+  mainBusinessLine?: { type?: string; descriptions?: PrhKuvaus[] };
+  website?: { url?: string };
+  addresses?: PrhOsoite[];
   registrationDate?: string;
   endDate?: string;
   status?: string;
   tradeRegisterStatus?: string;
 }
+
+/** PRH:n rekisterikoodit (REK-koodilista). */
+const REK: Record<string, string> = {
+  "1": "Kaupparekisteri",
+  "2": "Säätiörekisteri",
+  "3": "Yhdistysrekisteri",
+  "4": "Verohallinnon perustiedot",
+  "5": "Ennakkoperintärekisteri",
+  "6": "Arvonlisäverovelvollisuus",
+  "7": "Työnantajarekisteri",
+  "8": "Vakuutusmaksuverovelvollisten rekisteri",
+};
 
 interface PrhVastaus {
   totalResults?: number;
@@ -142,16 +169,62 @@ function aputoiminimet(yritys: PrhYritys): string[] {
     .map((n) => n.name as string);
 }
 
+function toimiala(yritys: PrhYritys): string | undefined {
+  const t = yritys.mainBusinessLine;
+  const kuvaus = suomeksi(t?.descriptions);
+  if (!kuvaus && !t?.type) return undefined;
+  return t?.type ? `${kuvaus ?? "?"} (TOL ${t.type})` : kuvaus;
+}
+
+function kotipaikka(yritys: PrhYritys): string | undefined {
+  for (const o of yritys.addresses ?? []) {
+    const kaupunki =
+      o.postOffices?.find((p) => p.languageCode === "1")?.city ??
+      o.postOffices?.[0]?.city;
+    if (kaupunki) return kaupunki.charAt(0) + kaupunki.slice(1).toLowerCase();
+  }
+  return undefined;
+}
+
+/** Voimassa olevat rekisterimerkinnät: "Ennakkoperintärekisteri: Rekisterissä". */
+function rekisterit(yritys: PrhYritys): string[] {
+  const nähdyt = new Set<string>();
+  const rivit: string[] = [];
+  for (const e of yritys.registeredEntries ?? []) {
+    if (e.endDate) continue;
+    const nimi = REK[e.register ?? ""] ?? `Rekisteri ${e.register ?? "?"}`;
+    const tila = suomeksi(e.descriptions) ?? "Rekisterissä";
+    const rivi = `${nimi}: ${tila}`;
+    if (!nähdyt.has(rivi)) {
+      nähdyt.add(rivi);
+      rivit.push(rivi);
+    }
+  }
+  return rivit;
+}
+
 function muotoileYritys(yritys: PrhYritys): string {
   const rivit = [
     `Nimi:              ${nykyinenNimi(yritys)}`,
     `Y-tunnus:          ${yritys.businessId?.value ?? "(ei tiedossa)"}`,
     `Yritysmuoto:       ${nykyinenYritysmuoto(yritys)}`,
+  ];
+  const ala = toimiala(yritys);
+  if (ala) rivit.push(`Toimiala:          ${ala}`);
+  const paikka = kotipaikka(yritys);
+  if (paikka) rivit.push(`Kotipaikka:        ${paikka}`);
+  if (yritys.website?.url) rivit.push(`Verkkosivu:        ${yritys.website.url}`);
+  rivit.push(
     `Rekisteröity:      ${rekisterointipaiva(yritys)}`,
     `Toiminnan tila:    ${toiminnanTila(yritys)}`,
-  ];
+  );
+
   const apu = aputoiminimet(yritys);
   if (apu.length) rivit.push(`Aputoiminimet:     ${apu.join(", ")}`);
+
+  const rek = rekisterit(yritys);
+  if (rek.length) rivit.push("Rekisterit:", ...rek.map((r) => `  ${r}`));
+
   return rivit.join("\n");
 }
 
