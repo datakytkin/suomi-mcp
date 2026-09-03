@@ -8,6 +8,7 @@ describe("loadTools", () => {
     expect(names).toEqual([
       "hae_julkiset_hankinnat_hilma",
       "hae_kaupparekisteri_muutokset_prh",
+      "hae_porssisahko",
       "hae_yritystiedot_prh",
     ]);
     expect(new Set(names).size).toBe(names.length);

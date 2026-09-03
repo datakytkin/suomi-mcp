@@ -41,8 +41,11 @@ export async function loadTools(): Promise<ToolDefinition[]> {
 
   for (const file of readdirSync(dir)) {
     if (!file.endsWith(ext) || file.endsWith(`.d${ext}`)) continue;
+    // Ohita testit ja apurit – ne eivät ole työkalumoduuleja eivätkä saa
+    // latautua ajossa (esim. *.test.ts importtaa "vitest").
+    if (file.endsWith(`.test${ext}`) || file.endsWith(`.spec${ext}`)) continue;
     const base = file.slice(0, -ext.length);
-    if (IGNORE.has(base)) continue;
+    if (IGNORE.has(base) || base.endsWith("-utils")) continue;
 
     const mod: Record<string, unknown> = await import(
       pathToFileURL(join(dir, file)).href
