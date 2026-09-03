@@ -10,6 +10,8 @@
 
 import { z } from "zod";
 
+import type { ToolDefinition } from "./types.js";
+
 const PRH_BASE = "https://avoindata.prh.fi/opendata-ytj-api/v3";
 const REQUEST_TIMEOUT_MS = 15_000;
 
@@ -242,3 +244,18 @@ export async function haeYritystiedotPrh({
       `Tarkenna hakua Y-tunnuksella saadaksesi täydet tiedot yhdestä yrityksestä.`,
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/* Työkalumäärittely (rekisteri poimii tämän automaattisesti)                 */
+/* -------------------------------------------------------------------------- */
+
+export const tool: ToolDefinition<{ hakusana: string }> = {
+  name: "hae_yritystiedot_prh",
+  title: "Hae yritystiedot (PRH / YTJ)",
+  description:
+    "Hakee suomalaisen yrityksen perustiedot PRH:n avoimesta YTJ-rajapinnasta. " +
+    "Anna joko Y-tunnus (1234567-8) tai yrityksen nimi. Palauttaa nimen, Y-tunnuksen, " +
+    "yritysmuodon, rekisteröintipäivän ja toiminnan tilan.",
+  inputSchema: haeYritystiedotPrhInputSchema,
+  handler: (args) => haeYritystiedotPrh(args),
+};

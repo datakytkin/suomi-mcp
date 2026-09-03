@@ -2,6 +2,10 @@ node_modules/
 dist/
 *.log
 .DS_Store
+.env
+.env.*
+!.env.example
+.datasilta-linjat.txt
 
 # demo-lähdenauhoitukset
 *.mov

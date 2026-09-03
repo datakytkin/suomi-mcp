@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.github
+*.log
+*.mov
+*.mp4
+.env
+.env.*
+npm-debug.log*
+.DS_Store
+README*.md
+CONTRIBUTING.md
+SECURITY.md
+scripts

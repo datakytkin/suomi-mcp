@@ -12,6 +12,8 @@
 
 import { z } from "zod";
 
+import type { ToolDefinition } from "./types.js";
+
 const RN_BASE = "https://avoindata.prh.fi/opendata-registerednotices-api/v3";
 const REQUEST_TIMEOUT_MS = 15_000;
 
@@ -412,3 +414,20 @@ export async function haeKaupparekisteriMuutoksetPrh({
       `Tarkenna hakua Y-tunnuksella nähdäksesi yhden yrityksen rekisteröidyt ilmoitukset.`,
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/* Työkalumäärittely (rekisteri poimii tämän automaattisesti)                 */
+/* -------------------------------------------------------------------------- */
+
+export const tool: ToolDefinition<{ hakusana: string; max_tulokset?: number }> = {
+  name: "hae_kaupparekisteri_muutokset_prh",
+  title: "Hae kaupparekisterin muutokset (PRH)",
+  description:
+    "Hakee yrityksen perustiedot ja aikajanan kaupparekisteriin rekisteröidyistä " +
+    "ilmoituksista PRH:n avoimesta rajapinnasta: hallitus- ja nimenmuutokset, " +
+    "tilinpäätökset, osakepääoman muutokset, konkurssi/saneeraus/selvitystila jne. " +
+    "Anna Y-tunnus (1234567-8) tai yrityksen nimi. Täysi kattavuus kaikkiin " +
+    "kaupparekisteriyrityksiin.",
+  inputSchema: haeKaupparekisteriMuutoksetPrhInputSchema,
+  handler: (args) => haeKaupparekisteriMuutoksetPrh(args),
+};

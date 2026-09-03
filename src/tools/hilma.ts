@@ -17,6 +17,8 @@
 
 import { z } from "zod";
 
+import type { ToolDefinition } from "./types.js";
+
 const HILMA_SEARCH_URL =
   "https://www.hankintailmoitukset.fi/search/eformnotices";
 const HILMA_NOTICE_BASE =
@@ -234,3 +236,22 @@ export async function haeJulkisetHankinnatHilma({
       `:\n\n${lohkot.join("\n\n")}`,
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/* Työkalumäärittely (rekisteri poimii tämän automaattisesti)                 */
+/* -------------------------------------------------------------------------- */
+
+export const tool: ToolDefinition<{
+  hakusana: string;
+  max_tulokset?: number;
+  vain_aktiiviset?: boolean;
+}> = {
+  name: "hae_julkiset_hankinnat_hilma",
+  title: "Hae julkiset hankinnat (Hilma)",
+  description:
+    "Hakee julkisia hankintailmoituksia Hilmasta (hankintailmoitukset.fi) hakusanalla. " +
+    "Palauttaa ilmoituksen otsikon, hankintayksikön, tarjousten määräajan ja suorat linkit " +
+    "ilmoitukseen ja tarjouspyyntöasiakirjoihin. Oletuksena vain avoinna olevat ilmoitukset.",
+  inputSchema: haeJulkisetHankinnatHilmaInputSchema,
+  handler: (args) => haeJulkisetHankinnatHilma(args),
+};

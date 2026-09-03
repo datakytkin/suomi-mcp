@@ -14,13 +14,25 @@ npm run typecheck
 
 ## Uuden työkalun lisääminen
 
-1. Luo `src/tools/<lahde>.ts`, joka vie:
-   - `<nimi>InputSchema` – Zod-raakaskeeman olio
-   - `async function <nimi>(args)` – palauttaa `{ content: [{ type: "text", text }] }`
-2. Rekisteröi työkalu `src/index.ts`:ssä `server.registerTool(...)`-kutsulla.
-3. Pidä ulostulo tiiviinä ihmisluettavana suomenkielisenä yhteenvetona.
-4. Käsittele verkkovirheet ja aikakatkaisut – palauta selkeä virheteksti, älä heitä.
-5. Päivitä `README.md`:n työkalutaulukko ja testikehotteet.
+1. Luo `src/tools/<lahde>.ts`.
+2. Vie siitä **`export const tool: ToolDefinition`** (tai `export const tools: ToolDefinition[]`):
+   ```ts
+   import type { ToolDefinition } from "./types.js";
+   export const tool: ToolDefinition<{ hakusana: string }> = {
+     name: "hae_...",
+     title: "…",
+     description: "Mitä tekee + mitä parametreja odottaa.",
+     inputSchema: { hakusana: z.string().min(1).describe("…") },
+     handler: async ({ hakusana }, ctx) => ({ content: [{ type: "text", text: "…" }] }),
+   };
+   ```
+3. Valmista – `src/tools/registry.ts` löytää sen automaattisesti. Sama työkalu
+   tulee sekä stdio-palvelimeen (`src/index.ts`) että Datasilta-Gatewayhin
+   (`src/gateway.ts`). **Älä** rekisteröi mitään käsin `index.ts`:ssä.
+4. Pidä ulostulo tiiviinä ihmisluettavana suomenkielisenä yhteenvetona.
+5. Käsittele verkkovirheet ja aikakatkaisut – palauta selkeä virheteksti, älä heitä
+   (Gateway käärii heitot silti `isError`-vastaukseksi, mutta selkeä teksti on parempi).
+6. Päivitä `README.md`:n työkalutaulukko ja testikehotteet.
 
 ## Periaatteet
 

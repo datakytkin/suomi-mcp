@@ -111,7 +111,10 @@ npm run build     # tuottaa dist/
 npm start         # = node dist/index.js
 ```
 
-Uuden työkalun lisääminen: ks. [CONTRIBUTING.md](CONTRIBUTING.md).
+Uuden työkalun lisääminen: ks. [CONTRIBUTING.md](CONTRIBUTING.md). Käytännössä:
+luo `src/tools/<lahde>.ts`, vie siitä `export const tool: ToolDefinition`, valmista –
+`src/tools/registry.ts` löytää sen automaattisesti sekä stdio-palvelimeen että
+Gatewayhin.
 
 Claude Desktop -konfiguraatio repo-checkoutista (kehitykseen / omiin muutoksiin):
 
@@ -125,6 +128,45 @@ Claude Desktop -konfiguraatio repo-checkoutista (kehitykseen / omiin muutoksiin)
   }
 }
 ```
+
+## Datasilta-Gateway (kokeellinen)
+
+Sama työkalusetti tarjottuna **keskitettynä HTTP-palvelimena**, jotta asiakkaan ei
+tarvitse asentaa mitään paikallisesti – hän liittää yhden URL:n + tokenin suoraan
+Claude Desktopiin tai Grokin Custom Connectors -kenttään.
+
+Gateway (`src/gateway.ts`, `src/auth.ts`) elää tässä samassa repossa
+(**Open Core**): koodi on MIT, kaupallinen arvo on hostatussa palvelussa +
+data-integraatioissa, ei transporttikoodissa. Jos/kun mukaan tulee laskutusta tai
+asiakastietoa, ne eriytetään omaksi (privaatiksi) osakseen.
+
+```bash
+npm install
+DATASILTA_DEV_ALLOW_ANY=1 PORT=3000 npm run dev:gateway
+```
+
+Päätepisteet:
+
+| Reitti | Kuvaus |
+| --- | --- |
+| `GET /sse?token=demo` | HTTP+SSE-kuljetus (laajin connector-tuki). Client postaa viestit `POST /messages?sessionId=…`. |
+| `POST /mcp` | Streamable HTTP -kuljetus (spec-nykyinen). Token joko `Authorization: Bearer …` tai `?token=…`. Stateless. |
+| `GET /healthz` | Tila + työkalulista |
+| `GET /` | Lyhyt käyttöohje |
+
+Mock-tokenit: `demo` (pro), `123` (free), `enterprise`. Kehityksessä
+`DATASILTA_DEV_ALLOW_ANY=1` hyväksyy minkä tahansa ≥3 merkin tokenin.
+
+Julkinen testaus ngrokilla:
+
+```bash
+ngrok http 3000
+# -> https://xxxx.ngrok-free.app/sse?token=demo  Grokiin / Claudeen
+```
+
+> **Kokeellinen.** CORS on täysin auki ja auth on mock. Älä aja tätä julkisesti
+> ilman oikeaa tokenvalidointia ja CORS-rajausta. `?token=` URL:ssa vuotaa
+> lokeihin – tuotannossa `Authorization: Bearer`.
 
 ## Ei virallinen tuote
 
