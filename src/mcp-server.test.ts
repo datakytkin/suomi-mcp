@@ -47,6 +47,15 @@ describe("createMcpServer", () => {
     expect(tools.map((t) => t.name).sort()).toEqual(["kaiku", "rikki"]);
   });
 
+  it("liittää oletusannotaatiot (read-only, open-world)", async () => {
+    const { tools } = await client.listTools();
+    const kaiku = tools.find((t) => t.name === "kaiku");
+    expect(kaiku?.annotations).toMatchObject({
+      readOnlyHint: true,
+      openWorldHint: true,
+    });
+  });
+
   it("ajaa työkalun ja palauttaa tekstin", async () => {
     const res = await client.callTool({ name: "kaiku", arguments: { teksti: "hei" } });
     expect((res.content as { text: string }[])[0]!.text).toBe("kaiku: hei");

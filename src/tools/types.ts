@@ -6,6 +6,7 @@
  * työkalun lisääminen = pudota tiedosto tähän kansioon.
  */
 
+import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import type { ZodRawShape } from "zod";
 
 /** Tokenin takana oleva asiakas (mock-auth palauttaa tämän). */
@@ -40,6 +41,11 @@ export interface ToolDefinition<Args = Record<string, unknown>> {
   description: string;
   /** Zod raw shape: olio jonka arvot ovat zod-skeemoja. */
   inputSchema: ZodRawShape;
+  /**
+   * MCP-vihjeet clientille. Oletus (jos ei annettu): read-only, open-world,
+   * idempotent – mikä pätee kaikkiin nykyisiin datahakutyökaluihin.
+   */
+  annotations?: ToolAnnotations;
   /** Varsinainen toteutus. `ctx` on käytettävissä esim. asiakas­kohtaiseen rajaukseen. */
   handler: (args: Args, ctx: ToolContext) => Promise<ToolResult> | ToolResult;
 }

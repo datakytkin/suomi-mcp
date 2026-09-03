@@ -29,6 +29,11 @@ export function createMcpServer(
         title: tool.title,
         description: tool.description,
         inputSchema: tool.inputSchema,
+        annotations: tool.annotations ?? {
+          readOnlyHint: true,
+          openWorldHint: true,
+          idempotentHint: true,
+        },
       },
       async (args: Record<string, unknown>) => {
         try {

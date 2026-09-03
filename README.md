@@ -160,6 +160,11 @@ Päätepisteet:
 Mock-tokenit: `demo` (pro), `123` (free), `enterprise`. Kehityksessä
 `DATASILTA_DEV_ALLOW_ANY=1` hyväksyy minkä tahansa ≥3 merkin tokenin.
 
+Kovennukset: plan-kohtainen rate limit (free 20 / pro 120 / enterprise 600
+kutsua/min, `RateLimit-*` + `Retry-After` -otsakkeet), rinnakkaisten SSE-sessioiden
+katto per asiakas, `X-Request-Id` + pyyntöloki, graceful shutdown (SIGTERM/SIGINT
+sulkee SSE-sessiot siististi – tärkeä konttiympäristöissä).
+
 Julkinen testaus ngrokilla:
 
 ```bash
