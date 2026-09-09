@@ -1,7 +1,7 @@
 {
   "name": "datakytkin-mcp",
-  "version": "0.4.0",
-  "description": "MCP-työkalut suomalaiseen avoimeen dataan (PRH/YTJ, Hilma). Ajettavissa paikallisena stdio-palvelimena tai keskitettynä Datasilta-Gatewayna (SSE / Streamable HTTP).",
+  "version": "0.5.0",
+  "description": "MCP-työkalut suomalaiseen avoimeen dataan: PRH/YTJ, Hilma, Tilastokeskus, Ilmatieteen laitos, VIES, pörssisähkö ym. Ajettavissa stdio-palvelimena tai keskitettynä Datasilta-Gatewayna (SSE / Streamable HTTP).",
   "type": "module",
   "license": "MIT",
   "author": "Tomi Salmi",

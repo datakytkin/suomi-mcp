@@ -11,7 +11,7 @@ jotka tuovat suomalaista avointa dataa suoraan tekoälyavustajien käyttöön �
 selaimessa kikkailua, PDF-latauksia tai leikepöytää.
 
 Paikallisesti ajettava **MCP-palvelin (stdio)**, joka tuo Claude Desktopin (tai
-muun MCP-yhteensopivan clientin) käyttöön kahdeksan työkalua suomalaisiin avoimen
+muun MCP-yhteensopivan clientin) käyttöön 11 työkalua suomalaisiin avoimen
 datan rajapintoihin:
 
 ![datakytkin-mcp demo: Claude hakee Hilmasta tarjouspyynnöt ja tarkistaa hankintayksiköiden kaupparekisteritiedot PRH:sta](https://raw.githubusercontent.com/datakytkin/suomi-mcp/main/.github/assets/demo.gif)
@@ -27,6 +27,9 @@ datan rajapintoihin:
 | `hae_porssisahko` | porssisahko.net avoin API | Suomen pörssisähkön (spot) tuntihinnat: hinta nyt, seuraavat tunnit, vuorokauden halvin ja kallein tunti. c/kWh sis. ALV 25,5 %. |
 | `hae_saa` | Ilmatieteen laitos, avoin data (WFS) | Sääennuste tunneittain paikkakunnalle: lämpötila, tuuli, sade, ilmankosteus. |
 | `laske_inflaatio` | Tilastokeskus StatFin (elinkustannusindeksi) | Rahan ostovoiman muutos vuosien välillä, yhtenäinen sarja vuodesta 1951. "Paljonko 1000 € vuonna 1985 on nyt." |
+| `hae_asuntojen_hinnat` | Tilastokeskus StatFin (ashi/13mu) | Vanhojen osakeasuntojen neliöhinnat ja kauppamäärät **postinumeroalueittain**, talotyypeittäin. |
+| `hae_polttoaineen_hinnat` | Tilastokeskus StatFin (khi/11xx) | Bensiini (95/98), diesel ja kevyt polttoöljy: keskihinta viimeisimmältä tilastokuukaudelta + muutos ed. kuukauteen ja vuoden takaiseen. |
+| `tarkista_iban` | – (ei rajapintaa) | IBAN-tilinumeron rakenne + tarkistusnumero (mod-97). Suomalaiselle IBANille kansallinen tilinumero ja arvio pankista. |
 
 > **PRH:** vanha `avoindata.prh.fi/bis/v1` on poistettu käytöstä. Tämä palvelin
 > käyttää nykyistä **v3**-rajapintaa (sama avoin YTJ-yrityshaku, ei API-avainta).
@@ -100,6 +103,9 @@ Päivitys: `npm install -g datakytkin-mcp@latest` samalla Nodella.
 9. *"Millainen sää Rovaniemellä on seuraavat 12 tuntia?"*
 10. *"Paljonko 500 markkaa vuonna 1990 on nykyrahassa?"*
 11. *"Näytä kaikki tiedot Hilman tietoturvakonsultoinnin dynaamisesta hankintajärjestelmästä."*
+12. *"Mitä maksaa neliö postinumerossa 33720?"*
+13. *"Paljonko diesel maksaa nyt ja miten hinta on muuttunut vuodessa?"*
+14. *"Onko IBAN FI21 1234 5600 0007 85 muodoltaan oikein ja minkä pankin tili?"*
 
 ## Kehitys
 
@@ -199,7 +205,7 @@ a set of [Model Context Protocol](https://modelcontextprotocol.io) tools that br
 Finnish open government data straight into AI assistants – no browser tabs, PDF
 downloads or copy-paste.
 
-A locally run **MCP server (stdio)** exposing eight tools to Claude Desktop (or any
+A locally run **MCP server (stdio)** exposing 11 tools to Claude Desktop (or any
 MCP-compatible client):
 
 | Tool | Source | What it does |
@@ -212,6 +218,9 @@ MCP-compatible client):
 | `hae_porssisahko` | porssisahko.net open API | Finnish day-ahead electricity spot prices by hour: price now, upcoming hours, cheapest and most expensive hour of the day. c/kWh incl. 25.5% VAT. |
 | `hae_saa` | Finnish Meteorological Institute open data (WFS) | Hourly weather forecast for a place: temperature, wind, precipitation, humidity. |
 | `laske_inflaatio` | Statistics Finland StatFin (cost-of-living index) | Purchasing power of a sum between two years, continuous series since 1951. |
+| `hae_asuntojen_hinnat` | Statistics Finland StatFin (ashi/13mu) | Resale flat €/m² and transaction counts by postal-code area, by dwelling type. |
+| `hae_polttoaineen_hinnat` | Statistics Finland StatFin (khi/11xx) | Petrol (95/98), diesel and light fuel oil: latest monthly average price + change vs previous month and year. |
+| `tarkista_iban` | – (no API) | IBAN structure + check digits (mod-97), offline. For Finnish IBANs also the national account number and a bank guess. |
 
 Tool names and all output are in Finnish (that is the data's language).
 
